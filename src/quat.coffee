@@ -30,4 +30,24 @@ class Quat extends Quadruple
 
   vectorOf  :           -> new Vector @x, @y, @z
 
+  @slerp = ( q1, q2, alpha, qOut ) ->
+    cos = q1.dot q2
+    if cos < 0
+      invert = true
+      cos = -cos
+    if cos is 1
+      min = alpha
+      max = 1 - alpha
+    else
+      o = Math.acos cos
+      sin = Math.sin o
+      min = Math.sin alpha * o
+      max = Math.sin ( o - alpha * o ) / sin
+    if invert then alpha = -alpha
+
+    qOut.w = max * q1.w + min * q2.w
+    qOut.x = max * q1.x + min * q2.x
+    qOut.y = max * q1.y + min * q2.y
+    qOut.z = max * q1.z + min * q2.z
+  
 quat = ( w, x, y, z ) -> new Quat w, x, y, z
