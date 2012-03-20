@@ -45,9 +45,11 @@ class Quat extends Quadruple
       max = Math.sin ( o - alpha * o ) / sin
     if invert then alpha = -alpha
 
+    qOut?= new Quat
     qOut.w = max * q1.w + min * q2.w
     qOut.x = max * q1.x + min * q2.x
     qOut.y = max * q1.y + min * q2.y
     qOut.z = max * q1.z + min * q2.z
-  
+    qOut
+
 quat = ( w, x, y, z ) -> new Quat w, x, y, z
