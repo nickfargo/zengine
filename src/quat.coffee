@@ -28,28 +28,33 @@ class Quat extends Quadruple
                            @w = w; @x = x; @y = y; @z = z; this
   divide    :       (q) -> @invert()?.mult q
 
+  slerp     : (q,a,out) ->
+                          cos = @dot q
+                          if cos < 0
+                            cos = -cos
+                            w   = -q.w
+                            x   = -q.x
+                            y   = -q.y
+                            z   = -q.z
+                          else
+                            {w,x,y,z} = q
+
+                          if 1 - cos > 0
+                            min = 1 - a
+                            max = a
+                          else
+                            o   = Math.acos cos
+                            sin = Math.sin o
+                            min = ( Math.sin (1 - a) * o ) / sin
+                            max = ( Math.sin a * o ) / sin
+
+                          out?= new Quat
+                          out.w = min * @w + max * w
+                          out.x = min * @x + max * x
+                          out.y = min * @y + max * y
+                          out.z = min * @z + max * z
+                          out
+
   vectorOf  :           -> new Vector @x, @y, @z
-
-  @slerp = ( q1, q2, alpha, qOut ) ->
-    cos = q1.dot q2
-    if cos < 0
-      invert = true
-      cos = -cos
-    if cos is 1
-      min = alpha
-      max = 1 - alpha
-    else
-      o = Math.acos cos
-      a = alpha * o
-      min = Math.sin a
-      max = Math.sin ( o - a ) / Math.sin o
-    if invert then alpha = -alpha
-
-    qOut?= new Quat
-    qOut.w = max * q1.w + min * q2.w
-    qOut.x = max * q1.x + min * q2.x
-    qOut.y = max * q1.y + min * q2.y
-    qOut.z = max * q1.z + min * q2.z
-    qOut
 
 quat = ( w, x, y, z ) -> new Quat w, x, y, z
