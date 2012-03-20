@@ -40,9 +40,9 @@ class Quat extends Quadruple
       max = 1 - alpha
     else
       o = Math.acos cos
-      sin = Math.sin o
-      min = Math.sin alpha * o
-      max = Math.sin ( o - alpha * o ) / sin
+      a = alpha * o
+      min = Math.sin a
+      max = Math.sin ( o - a ) / Math.sin o
     if invert then alpha = -alpha
 
     qOut?= new Quat
