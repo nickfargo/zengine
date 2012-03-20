@@ -1,4 +1,4 @@
-class Quat extends Vector
+class Quat extends Quadruple
   constructor: ( w, x, y, z ) ->
     return new Quat w, x, y, z unless this instanceof Quat
     @w = +w or 0; @x = +x or 0; @y = +y or 0; @z = +z or 0; this
@@ -29,3 +29,5 @@ class Quat extends Vector
   divide    :       (q) -> @invert()?.mult q
 
   vectorOf  :           -> new Vector @x, @y, @z
+
+quat = ( w, x, y, z ) -> new Quat w, x, y, z
